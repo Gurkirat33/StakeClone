@@ -62,3 +62,49 @@ export const getUser = asyncHandler(async (req, res) => {
     .status(200)
     .json(apiResponse(200, "User fetched successfully", { user }));
 });
+
+export const loginUser = asyncHandler(async (req, res) => {
+  const { username, password } = req.body;
+
+  if (!username || !password) {
+    return res
+      .status(400)
+      .json(apiError(400, "Username and password are required"));
+  }
+
+  const user = await User.findOne({ username });
+  if (!user) {
+    return res
+      .status(400)
+      .json(apiError(400, "Username or password is incorrect"));
+  }
+
+  if (!(await user.isPasswordCorrect(password))) {
+    return res
+      .status(400)
+      .json(apiError(400, "Username or password is incorrect"));
+  }
+
+  const { accessToken, refreshToken } = await generateAccessAndRefreshToken(
+    user._id
+  );
+
+  const userWithoutPassword = await User.findById(user._id).select(
+    "-password -refreshToken"
+  );
+
+  const options = {
+    httpOnly: true,
+    secure: true,
+  };
+
+  return res
+    .status(200)
+    .cookie("accessToken", accessToken, options)
+    .cookie("refreshToken", refreshToken, options)
+    .json(
+      apiResponse(200, "User logged in successfully", {
+        user: userWithoutPassword,
+      })
+    );
+});

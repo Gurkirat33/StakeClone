@@ -5,28 +5,31 @@ import {
   useLocation,
 } from "react-router-dom";
 import Navbar from "./components/Navbar";
-import Footer from "./components/Footer";
 import Register from "./pages/Register";
 import Login from "./pages/Login";
 import ProtectedRoutes from "./components/ProtectedRoutes";
 import Home from "./pages/Home";
 import { Toaster } from "react-hot-toast";
+import MineGame from "./games/MineGame";
+import PublicRoutes from "./components/PublicRoutes";
 
 const AppRouting = () => {
   const location = useLocation();
-  const hideFooterPaths = ["/register", "/login"];
+  const hideHeaderPaths = ["/register", "/login"];
   return (
     <>
-      {/* <Navbar /> */}
+      {!hideHeaderPaths.includes(location.pathname) && <Navbar />}
       <Toaster />
       <Routes>
-        <Route path="/register" element={<Register />} />
-        <Route path="/login" element={<Login />} />
+        <Route element={<PublicRoutes />}>
+          <Route path="/register" element={<Register />} />
+          <Route path="/login" element={<Login />} />
+        </Route>
         <Route element={<ProtectedRoutes />}>
           <Route path="/" element={<Home />} />
+          <Route path="/mine" element={<MineGame />} />
         </Route>
       </Routes>
-      {!hideFooterPaths.includes(location.pathname) && <Footer />}
     </>
   );
 };

@@ -22,6 +22,9 @@ const userSchema = new mongoose.Schema(
     refreshToken: {
       type: String,
     },
+    gameToken: {
+      type: String,
+    },
   },
   { timestamps: true }
 );

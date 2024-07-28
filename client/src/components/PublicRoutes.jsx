@@ -1,13 +1,12 @@
-import axios from "axios";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Navigate, Outlet, useLocation } from "react-router-dom";
+import { Navigate, Outlet } from "react-router-dom";
 import { setUser } from "../redux/slices/user.slice";
+import axios from "axios";
 
-const ProtectedRoutes = () => {
+const PublicRoutes = () => {
   const user = useSelector((state) => state.user.user);
   const dispatch = useDispatch();
-  const location = useLocation();
 
   useEffect(() => {
     const getUser = async () => {
@@ -19,12 +18,13 @@ const ProtectedRoutes = () => {
       }
     };
     getUser();
-  }, [dispatch, location.pathname]);
+  }, [dispatch]);
 
   if (user === undefined) {
-    return <div>Loading</div>;
+    return <div>Loading...</div>;
   }
-  return user ? <Outlet /> : <Navigate to="/login" />;
+
+  return user ? <Navigate to="/" /> : <Outlet />;
 };
 
-export default ProtectedRoutes;
+export default PublicRoutes;

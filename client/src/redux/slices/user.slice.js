@@ -11,8 +11,13 @@ export const userSlice = createSlice({
     setUser: (state, action) => {
       state.user = action.payload;
     },
+    changePoints: (state, action) => {
+      if (state.user) {
+        state.user.points = action.payload;
+      }
+    },
   },
 });
 
-export const { setUser } = userSlice.actions;
+export const { setUser, changePoints } = userSlice.actions;
 export default userSlice.reducer;
