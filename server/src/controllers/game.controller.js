@@ -62,77 +62,77 @@ export const determineMineOrBomb = asyncHandler(async (req, res) => {
   }
   await userStats.save();
   const isMine = () => {
-    const successCount = existingGame.tempMineSuccessCount; //number of gems opened
-    const userBetAmount = parseInt(betAmount); //Money user spend on current game
-    const { wins, losses, profitTillNow, lossTillNow, averageBetAmount } =
-      numberOfWinsAndLosses();
-    const profitDiffernce = profitTillNow - lossTillNow;
-    const userNumberOfMines = parseInt(numberOfMines); //Number of mines in current game
-    const points = user.points; //User overall balance
+    // const successCount = existingGame.tempMineSuccessCount; //number of gems opened
+    // const userBetAmount = parseInt(betAmount); //Money user spend on current game
+    // const { wins, losses, profitTillNow, lossTillNow, averageBetAmount } =
+    //   numberOfWinsAndLosses();
+    // const profitDiffernce = profitTillNow - lossTillNow;
+    // const userNumberOfMines = parseInt(numberOfMines); //Number of mines in current game
+    // const points = user.points; //User overall balance
 
-    // ALGO
-    // if (wins - losses > 3 && userNumberOfMines > 4) {
+    // // ALGO
+    // // if (wins - losses > 3 && userNumberOfMines > 4) {
+    // //   return true;
+    // // }
+    // if (
+    //   wins + losses < 3 &&
+    //   userNumberOfMines < 5 &&
+    //   successCount < 4 &&
+    //   Math.random() < 0.8
+    // ) {
+    //   return false;
+    // }
+    // if (
+    //   wins - losses < -3 &&
+    //   userNumberOfMines < 5 &&
+    //   successCount < 4 &&
+    //   Math.random() < 0.55
+    // ) {
+    //   return false;
+    // }
+    // // ALGO
+    // if (profitDiffernce > 0) {
+    //   if ((profitDiffernce > 450 && userNumberOfMines > 7) || points > 800) {
+    //     return true;
+    //   }
+    //   if (Math.random() > 0.45) {
+    //     return true;
+    //   }
+    // }
+
+    // if (userBetAmount > averageBetAmount * 2.5) {
+    //   if (
+    //     userBetAmount > averageBetAmount * 3.5 &&
+    //     userNumberOfMines > 4 &&
+    //     successCount < 3
+    //   ) {
+    //     return true;
+    //   }
+    //   if (Math.random() < 0.55) {
+    //     return true;
+    //   }
+    // }
+
+    // if (successCount < 3) {
+    //   if (profitDiffernce < 0 && Math.random() < 0.35) {
+    //     return false;
+    //   }
+    //   if (profitDiffernce > 0 && Math.random() > 0.35) {
+    //     return true;
+    //   }
+    // }
+    // // ALGO
+    // const randomComparison = parseFloat(Math.random()).toFixed(2);
+    // if (
+    //   successCount > 3 &&
+    //   randomComparison < successCount / (8 - successCount)
+    // ) {
     //   return true;
     // }
-    if (
-      wins + losses < 3 &&
-      userNumberOfMines < 5 &&
-      successCount < 4 &&
-      Math.random() < 0.8
-    ) {
-      return false;
-    }
-    if (
-      wins - losses < -3 &&
-      userNumberOfMines < 5 &&
-      successCount < 4 &&
-      Math.random() < 0.55
-    ) {
-      return false;
-    }
-    // ALGO
-    if (profitDiffernce > 0) {
-      if ((profitDiffernce > 450 && userNumberOfMines > 7) || points > 800) {
-        return true;
-      }
-      if (Math.random() > 0.45) {
-        return true;
-      }
-    }
 
-    if (userBetAmount > averageBetAmount * 2.5) {
-      if (
-        userBetAmount > averageBetAmount * 3.5 &&
-        userNumberOfMines > 4 &&
-        successCount < 3
-      ) {
-        return true;
-      }
-      if (Math.random() < 0.55) {
-        return true;
-      }
-    }
-
-    if (successCount < 3) {
-      if (profitDiffernce < 0 && Math.random() < 0.35) {
-        return false;
-      }
-      if (profitDiffernce > 0 && Math.random() > 0.35) {
-        return true;
-      }
-    }
-    // ALGO
-    const randomComparison = parseFloat(Math.random()).toFixed(2);
-    if (
-      successCount > 3 &&
-      randomComparison < successCount / (8 - successCount)
-    ) {
-      return true;
-    }
-
-    if (25 - +numberOfMines === existingGame.tempMineSuccessCount) {
-      return true;
-    }
+    // if (25 - +numberOfMines === existingGame.tempMineSuccessCount) {
+    //   return true;
+    // }
 
     // if (numberOfMines <= 10) {
     //   const probabilty = Math.random() + numberOfMines / 30;
@@ -144,9 +144,9 @@ export const determineMineOrBomb = asyncHandler(async (req, res) => {
     //     }
     //   }
     // }
-    if (numberOfMines > 15 || (successCount > 2 && Math.random() > 0.85)) {
-      return true;
-    }
+    // if (numberOfMines > 15 || (successCount > 2 && Math.random() > 0.85)) {
+    //   return true;
+    // }
 
     return false;
   };
