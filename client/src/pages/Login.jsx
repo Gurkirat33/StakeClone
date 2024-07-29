@@ -5,7 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { setUser } from "../redux/slices/user.slice";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
-
+axios.defaults.withCredentials = true;
 const Login = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();

@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Navigate, Outlet } from "react-router-dom";
 import { setUser } from "../redux/slices/user.slice";
 import axios from "axios";
-
+axios.defaults.withCredentials = true;
 const PublicRoutes = () => {
   const user = useSelector((state) => state.user.user);
   const dispatch = useDispatch();

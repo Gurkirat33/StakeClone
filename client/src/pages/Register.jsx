@@ -4,7 +4,7 @@ import toast from "react-hot-toast";
 import { setUser } from "../redux/slices/user.slice";
 import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-
+axios.defaults.withCredentials = true;
 const Register = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();

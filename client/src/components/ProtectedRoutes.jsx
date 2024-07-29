@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Navigate, Outlet, useLocation } from "react-router-dom";
 import { setUser } from "../redux/slices/user.slice";
-
+axios.defaults.withCredentials = true;
 const ProtectedRoutes = () => {
   const user = useSelector((state) => state.user.user);
   const dispatch = useDispatch();

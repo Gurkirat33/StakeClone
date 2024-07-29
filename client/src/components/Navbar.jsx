@@ -6,6 +6,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { setUser } from "../redux/slices/user.slice";
 import toast from "react-hot-toast";
 
+axios.defaults.withCredentials = true;
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const user = useSelector((state) => state.user.user);

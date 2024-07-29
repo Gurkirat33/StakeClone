@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
-
+axios.defaults.withCredentials = true;
 const Dashboard = () => {
   const [gameHistory, setGameHistory] = useState([]);
   const [loading, setLoading] = useState(false);

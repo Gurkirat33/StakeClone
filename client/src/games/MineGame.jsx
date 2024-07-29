@@ -7,7 +7,7 @@ import GemImg from "../assets/gem.svg";
 import MineImg from "../assets/mine.svg";
 
 const numberOfMinesArray = Array.from({ length: 22 }, (_, i) => i + 3);
-
+axios.defaults.withCredentials = true;
 const MineGame = () => {
   const dispatch = useDispatch();
   const [mineArray, setMineArray] = useState(Array(25).fill(""));

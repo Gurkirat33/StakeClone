@@ -65,7 +65,6 @@ export const getUser = asyncHandler(async (req, res) => {
 
 export const loginUser = asyncHandler(async (req, res) => {
   const { username, password } = req.body;
-
   if (!username || !password) {
     return res
       .status(400)
@@ -96,6 +95,7 @@ export const loginUser = asyncHandler(async (req, res) => {
   const options = {
     httpOnly: true,
     secure: true,
+    sameSite: "none",
   };
 
   return res
