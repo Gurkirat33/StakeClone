@@ -1,14 +1,29 @@
+import axios from "axios";
 import { useState } from "react";
 import { FaSearch, FaUser, FaWallet, FaBars, FaTimes } from "react-icons/fa";
-import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
+import { setUser } from "../redux/slices/user.slice";
+import toast from "react-hot-toast";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const user = useSelector((state) => state.user.user);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
+  };
+  const handleLogoutBtn = async () => {
+    try {
+      await axios.post("/api/v1/user/logout");
+      dispatch(setUser(undefined));
+      toast.success("User logged out successfully");
+      navigate("/login");
+    } catch (error) {
+      toast.error(error.response?.data?.message);
+    }
   };
 
   return (
@@ -34,9 +49,15 @@ const Navbar = () => {
           <div className="flex items-center space-x-4">
             <div className="flex items-center">
               <FaWallet className="mr-1" />
-              <span>{user ? user.points : 0}</span>
+              <span>{user ? parseInt(user.points).toFixed(2) : 0}</span>
             </div>
             <FaUser className="cursor-pointer" />
+            <button
+              className="rounded-lg border border-primary-600 bg-primary-700 px-4 py-2"
+              onClick={handleLogoutBtn}
+            >
+              Logout
+            </button>
           </div>
         </div>
       </div>
@@ -51,10 +72,16 @@ const Navbar = () => {
             (
             <div className="flex items-center">
               <FaWallet className="mr-1" />
-              {<span>{user ? user.points : 0}</span>}
+              {<span>{user ? parseFloat(user.points).toFixed(2) : 0}</span>}
             </div>
             )
             <FaUser className="cursor-pointer" />
+            <button
+              className="rounded-lg border border-primary-600 bg-primary-700 px-4 py-2"
+              onClick={handleLogoutBtn}
+            >
+              Logout
+            </button>
           </div>
         </div>
       </div>

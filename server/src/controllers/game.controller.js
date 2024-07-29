@@ -9,12 +9,35 @@ export const determineMineOrBomb = asyncHandler(async (req, res) => {
   const gameId = user.gameToken;
   let userStats = await UserStats.findOne({ user_id: user._id });
   let existingGame;
+  const numberOfWinsAndLosses = () => {
+    let wins = 0;
+    let losses = 0;
+    let profitTillNow = 0;
+    let lossTillNow = 0;
+    let averageBetAmount = 0;
+    averageBetAmount /= userStats.games.length;
+    userStats.games.forEach((game) => {
+      if (!game) return { wins: 0, losses: 0 };
+      averageBetAmount += +game.betAmount;
+      if (game.isGameWon) {
+        wins += 1;
+        const profitPerGame =
+          game.tempPreviousMineSuccessProfit * game.betAmount;
+        profitTillNow += profitPerGame;
+      } else {
+        losses += 1;
+        lossTillNow += game.betAmount;
+      }
+    });
+    return { wins, losses, profitTillNow, lossTillNow, averageBetAmount };
+  };
   if (!userStats) {
     userStats = await UserStats.create({
       user_id: user._id,
       games: [
         {
           gameId,
+          betAmount: betAmount,
           isGameWon: true,
           tempMineSuccessCount: 0,
           tempPreviousMineSuccessProfit: 0,
@@ -28,6 +51,7 @@ export const determineMineOrBomb = asyncHandler(async (req, res) => {
     if (!existingGame) {
       userStats.games.push({
         gameId,
+        betAmount: betAmount,
         isGameWon: true,
         tempMineSuccessCount: 0,
         tempPreviousMineSuccessProfit: 0,
@@ -38,36 +62,74 @@ export const determineMineOrBomb = asyncHandler(async (req, res) => {
   }
   await userStats.save();
   const isMine = () => {
-    console.log("existingGame", existingGame);
     const successCount = existingGame.tempMineSuccessCount; //number of gems opened
-    console.log("successCount", successCount);
     const userBetAmount = parseInt(betAmount); //Money user spend on current game
-    const numberOfWins = userStats.games.map((game) => {
-      if (!game) return 0;
-      return game.isGameWon - game.isGameLost;
-    });
+    const { wins, losses, profitTillNow, lossTillNow, averageBetAmount } =
+      numberOfWinsAndLosses();
+    const profitDiffernce = profitTillNow - lossTillNow;
     const userNumberOfMines = parseInt(numberOfMines); //Number of mines in current game
     const points = user.points; //User overall balance
 
+    // ALGO
+    // if (wins - losses > 3 && userNumberOfMines > 4) {
+    //   return true;
+    // }
+    if (
+      wins - losses < -3 &&
+      userNumberOfMines < 5 &&
+      successCount < 4 &&
+      Math.random() < 0.55
+    ) {
+      return false;
+    }
+    // ALGO
+    if (profitDiffernce > 0) {
+      if ((profitDiffernce > 450 && userNumberOfMines > 7) || points > 800) {
+        return true;
+      }
+      if (Math.random() > 0.45) {
+        return true;
+      }
+    }
+
+    if (userBetAmount < averageBetAmount * 2.5) {
+      if (
+        userBetAmount < averageBetAmount * 3.5 &&
+        userNumberOfMines > 4 &&
+        successCount < 3
+      ) {
+        return true;
+      }
+      if (Math.random() < 0.55) {
+        return true;
+      }
+    }
+    // ALGO
     const randomComparison = parseFloat(Math.random()).toFixed(2);
     if (
-      successCount < 5 &&
+      successCount < 3 &&
       randomComparison < successCount / (8 - successCount)
     ) {
       return true;
     }
 
-    if (userBetAmount) {
-      // TODO
-    }
     if (25 - +numberOfMines === existingGame.tempMineSuccessCount) {
       return true;
     }
 
-    // const probability = Math.random() * 100;
-    // if (probability < 60) {
-    //   return true;
+    // if (numberOfMines <= 10) {
+    //   const probabilty = Math.random() + numberOfMines / 30;
+    //   if (probabilty < 0.4) {
+    //     return false;
+    //   } else {
+    //     if (probabilty > 0.4 && probabilty < 0.85) {
+    //       return true;
+    //     }
+    //   }
     // }
+    if (numberOfMines > 15 || (successCount > 2 && Math.random() > 0.85)) {
+      return true;
+    }
 
     return false;
   };
@@ -141,8 +203,6 @@ export const determineMineOrBomb = asyncHandler(async (req, res) => {
     );
     existingGame.tempPreviousMineSuccessProfit = profitPercentage;
     await userStats.save({ validateBeforeSave: false });
-    console.log(existingGame.tempMineSuccessCount);
-    console.log(+numberOfMines);
     const isGameFinished =
       existingGame.tempMineSuccessCount == 25 - +numberOfMines;
     return res
@@ -178,9 +238,6 @@ export const addPoints = asyncHandler(async (req, res) => {
 export const clearGame = asyncHandler(async (req, res) => {
   const { betAmount } = req.body;
   const user = req.user;
-  console.log("user", user);
-  console.log("User points", user.points);
-  console.log("betAmount", +betAmount);
   user.gameToken = null;
   user.points = user.points + +betAmount;
   await user.save({ validateBeforeSave: false });

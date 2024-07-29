@@ -6,6 +6,10 @@ const gameStatsSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    betAmount: {
+      type: Number,
+      default: 0,
+    },
     isGameWon: {
       type: Boolean,
       default: true,

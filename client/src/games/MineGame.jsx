@@ -9,7 +9,6 @@ import MineImg from "../assets/mine.svg";
 const numberOfMinesArray = Array.from({ length: 22 }, (_, i) => i + 3);
 
 const MineGame = () => {
-  console.log(window.location.href);
   const dispatch = useDispatch();
   const [mineArray, setMineArray] = useState(Array(25).fill(""));
   const [mineData, setMineData] = useState({
