@@ -42,6 +42,8 @@ export const registerUser = asyncHandler(async (req, res) => {
   const options = {
     httpOnly: true,
     secure: true,
+    sameSite: "None",
+    path: "/",
   };
 
   return res
@@ -95,7 +97,8 @@ export const loginUser = asyncHandler(async (req, res) => {
   const options = {
     httpOnly: true,
     secure: true,
-    sameSite: "none",
+    sameSite: "None",
+    path: "/",
   };
 
   return res
