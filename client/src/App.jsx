@@ -12,6 +12,7 @@ import Home from "./pages/Home";
 import { Toaster } from "react-hot-toast";
 import MineGame from "./games/MineGame";
 import PublicRoutes from "./components/PublicRoutes";
+import Dashboard from "./pages/Dashboard";
 
 const AppRouting = () => {
   const location = useLocation();
@@ -28,6 +29,7 @@ const AppRouting = () => {
         <Route element={<ProtectedRoutes />}>
           <Route path="/" element={<Home />} />
           <Route path="/mine" element={<MineGame />} />
+          <Route path="/dashboard" element={<Dashboard />} />
         </Route>
       </Routes>
     </>

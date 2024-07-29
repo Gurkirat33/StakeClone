@@ -129,14 +129,13 @@ const MineGame = () => {
   };
   useEffect(() => {
     const handleBeforeUnload = async () => {
-      console.log("before unload");
       try {
         const res = await axios.post("/api/v1/game/clear-game", {
           betAmount: mineData.betAmount,
         });
         dispatch(changePoints(res.data.data.points));
       } catch (error) {
-        console.log(error);
+        toast.error(error.response?.data?.message);
       }
     };
     window.addEventListener("beforeunload", handleBeforeUnload);

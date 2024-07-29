@@ -37,14 +37,7 @@ const Navbar = () => {
             PointPlay
           </Link>
         </div>
-        <div className="hidden flex-grow items-center justify-center md:flex">
-          <input
-            type="text"
-            placeholder="Search"
-            className="w-full max-w-md rounded-lg border border-primary-600 bg-primary-700 px-4 py-2 text-white placeholder-gray-400 focus:outline-none"
-          />
-          <FaSearch className="ml-2 cursor-pointer" />
-        </div>
+        <div className="hidden flex-grow items-center justify-center md:flex"></div>
         <div className="hidden items-center md:flex">
           <div className="flex items-center space-x-4">
             <div className="flex items-center">
@@ -52,6 +45,12 @@ const Navbar = () => {
               <span>{user ? parseInt(user.points).toFixed(2) : 0}</span>
             </div>
             <FaUser className="cursor-pointer" />
+            <Link
+              className="rounded-lg border border-primary-600 bg-primary-700 px-4 py-2"
+              to="/dashboard"
+            >
+              Dashboard
+            </Link>
             <button
               className="rounded-lg border border-primary-600 bg-primary-700 px-4 py-2"
               onClick={handleLogoutBtn}
@@ -63,11 +62,6 @@ const Navbar = () => {
       </div>
       <div className={`md:hidden ${isMenuOpen ? "block" : "hidden"}`}>
         <div className="flex flex-col space-y-4 p-4">
-          <input
-            type="text"
-            placeholder="Search"
-            className="w-full rounded-lg border border-primary-600 bg-primary-700 px-4 py-2 text-gray-400 placeholder-gray-400 focus:outline-none"
-          />
           <div className="flex items-center space-x-4">
             (
             <div className="flex items-center">

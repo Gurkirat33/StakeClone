@@ -75,6 +75,14 @@ export const determineMineOrBomb = asyncHandler(async (req, res) => {
     //   return true;
     // }
     if (
+      wins + losses < 3 &&
+      userNumberOfMines < 5 &&
+      successCount < 4 &&
+      Math.random() < 0.8
+    ) {
+      return false;
+    }
+    if (
       wins - losses < -3 &&
       userNumberOfMines < 5 &&
       successCount < 4 &&
@@ -92,9 +100,9 @@ export const determineMineOrBomb = asyncHandler(async (req, res) => {
       }
     }
 
-    if (userBetAmount < averageBetAmount * 2.5) {
+    if (userBetAmount > averageBetAmount * 2.5) {
       if (
-        userBetAmount < averageBetAmount * 3.5 &&
+        userBetAmount > averageBetAmount * 3.5 &&
         userNumberOfMines > 4 &&
         successCount < 3
       ) {
@@ -104,10 +112,19 @@ export const determineMineOrBomb = asyncHandler(async (req, res) => {
         return true;
       }
     }
+
+    if (successCount < 3) {
+      if (profitDiffernce < 0 && Math.random() < 0.35) {
+        return false;
+      }
+      if (profitDiffernce > 0 && Math.random() > 0.35) {
+        return true;
+      }
+    }
     // ALGO
     const randomComparison = parseFloat(Math.random()).toFixed(2);
     if (
-      successCount < 3 &&
+      successCount > 3 &&
       randomComparison < successCount / (8 - successCount)
     ) {
       return true;
@@ -244,4 +261,17 @@ export const clearGame = asyncHandler(async (req, res) => {
   return res
     .status(200)
     .json(apiResponse(200, "Balance points", { points: user.points }));
+});
+
+export const gameHistory = asyncHandler(async (req, res) => {
+  const user = req.user;
+  const games = await UserStats.find({ user_id: user._id });
+  if (!games[0].games.length) {
+    return res
+      .status(200)
+      .json(apiResponse(200, "No games played", { games: [] }));
+  }
+  return res
+    .status(200)
+    .json(apiResponse(200, "", { games: games[0].games.reverse() }));
 });
