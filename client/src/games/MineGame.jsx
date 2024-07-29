@@ -63,10 +63,13 @@ const MineGame = () => {
     }
     try {
       setLoading(true);
-      const res = await axios.post("/api/v1/game/mine", {
-        betAmount: mineData.betAmount,
-        numberOfMines: mineData.numberOfMines,
-      });
+      const res = await axios.post(
+        "https://stakeclone-backend.onrender.com/api/v1/game/mine",
+        {
+          betAmount: mineData.betAmount,
+          numberOfMines: mineData.numberOfMines,
+        },
+      );
 
       setMineArray((prev) => {
         const newMineArray = [...prev];
@@ -98,9 +101,12 @@ const MineGame = () => {
       return;
     }
     try {
-      const res = await axios.post("/api/v1/game/deduct-points", {
-        betAmount: mineData.betAmount,
-      });
+      const res = await axios.post(
+        "https://stakeclone-backend.onrender.com/api/v1/game/deduct-points",
+        {
+          betAmount: mineData.betAmount,
+        },
+      );
       setPoints(res.data.data?.points);
       handleResetBtn();
       setIsPlaying(true);
@@ -115,10 +121,13 @@ const MineGame = () => {
   };
   const handleCashoutBtn = async () => {
     try {
-      const res = await axios.post("/api/v1/game/add-points", {
-        profit,
-        betAmount: mineData.betAmount,
-      });
+      const res = await axios.post(
+        "https://stakeclone-backend.onrender.com/api/v1/game/add-points",
+        {
+          profit,
+          betAmount: mineData.betAmount,
+        },
+      );
       setPoints(+res.data.data?.points);
       revealUnknownMine(mineArray, 0);
       // handleResetBtn();
@@ -130,9 +139,12 @@ const MineGame = () => {
   useEffect(() => {
     const handleBeforeUnload = async () => {
       try {
-        const res = await axios.post("/api/v1/game/clear-game", {
-          betAmount: mineData.betAmount,
-        });
+        const res = await axios.post(
+          "https://stakeclone-backend.onrender.com/api/v1/game/clear-game",
+          {
+            betAmount: mineData.betAmount,
+          },
+        );
         dispatch(changePoints(res.data.data.points));
       } catch (error) {
         toast.error(error.response?.data?.message);

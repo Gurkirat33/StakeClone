@@ -26,10 +26,13 @@ const Login = () => {
       return;
     }
     try {
-      const res = await axios.post("/api/v1/user/login", {
-        username: formData.username,
-        password: formData.password,
-      });
+      const res = await axios.post(
+        "https://stakeclone-backend.onrender.com/api/v1/user/login",
+        {
+          username: formData.username,
+          password: formData.password,
+        },
+      );
       dispatch(setUser(res.data.data.user));
       toast.success("User logged in successfully");
       navigate("/");

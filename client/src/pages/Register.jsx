@@ -50,10 +50,13 @@ const Register = () => {
     }
 
     try {
-      const res = await axios.post("/api/v1/user/register", {
-        username: formData.username,
-        password: formData.password,
-      });
+      const res = await axios.post(
+        "https://stakeclone-backend.onrender.com/api/v1/user/register",
+        {
+          username: formData.username,
+          password: formData.password,
+        },
+      );
       dispatch(setUser(res.data.data.user));
       navigate("/");
       toast.success("User created successfully");

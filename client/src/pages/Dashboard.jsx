@@ -10,7 +10,9 @@ const Dashboard = () => {
     const gameHistory = async () => {
       try {
         setLoading(true);
-        const res = await axios.get("/api/v1/game/game-history");
+        const res = await axios.get(
+          "https://stakeclone-backend.onrender.com/api/v1/game/game-history",
+        );
         setGameHistory(res.data.data.games);
       } catch (error) {
         setGameHistory([]);

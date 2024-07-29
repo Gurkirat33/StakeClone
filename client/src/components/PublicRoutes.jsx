@@ -11,7 +11,9 @@ const PublicRoutes = () => {
   useEffect(() => {
     const getUser = async () => {
       try {
-        const res = await axios.get("/api/v1/user/get-user");
+        const res = await axios.get(
+          "https://stakeclone-backend.onrender.com/api/v1/user/get-user",
+        );
         dispatch(setUser(res.data.data.user));
       } catch (error) {
         dispatch(setUser(null));

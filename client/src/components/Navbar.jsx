@@ -17,7 +17,9 @@ const Navbar = () => {
   };
   const handleLogoutBtn = async () => {
     try {
-      await axios.post("/api/v1/user/logout");
+      await axios.post(
+        "https://stakeclone-backend.onrender.com/api/v1/user/logout",
+      );
       dispatch(setUser(undefined));
       toast.success("User logged out successfully");
       navigate("/login");
