@@ -54,9 +54,9 @@ const Register = () => {
         username: formData.username,
         password: formData.password,
       });
-      toast.success("User created successfully");
       dispatch(setUser(res.data.data.user));
       navigate("/");
+      toast.success("User created successfully");
     } catch (error) {
       toast.error(error.response?.data?.message);
     }
