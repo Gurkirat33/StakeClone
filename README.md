@@ -31,7 +31,7 @@ Ensure you have the following installed on your machine:
 1. **Clone the Repository**
 
    ```bash
-   git clone https://github.com/yourusername/stakeclone.git
+   git clone https://github.com/Gurkirat33/StakeClone.git
    cd stakeclone
 
 2. **Install Backend Dependencies**
